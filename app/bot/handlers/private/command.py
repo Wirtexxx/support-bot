@@ -23,22 +23,19 @@ async def handler(
     """
     Handles the /start command.
 
-    If the user has already selected a language, displays the main menu window.
-    Otherwise, prompts the user to select a language.
-
-    :param message: Message object.
-    :param manager: Manager object.
-    :param redis: RedisStorage object.
-    :param user_data: UserData object.
-    :return: None
+    Sends a sticker, then either shows the main menu (if language is set) or
+    prompts for language selection. Finally, creates (or fetches) a forum topic.
     """
+    # Отправляем стикер по его ID (замените 'YOUR_STICKER_ID' на фактический ID вашего стикера)
+    await message.bot.send_sticker(chat_id=message.chat.id, sticker="CAACAgIAAxkBAAEOnqVoPFDGG4ku9yKPMSD4b2ilD3_hOAAC1XYAAk0f4UnF-LXTUdESoDYE")
+
     if user_data.language_code:
         await Window.main_menu(manager)
     else:
         await Window.select_language(manager)
     await manager.delete_message(message)
 
-    # Create the forum topic
+    # Create (or get) the forum topic for this user
     await get_or_create_forum_topic(message.bot, redis, manager.config, user_data)
 
 
@@ -49,11 +46,6 @@ async def handler(message: Message, manager: Manager, user_data: UserData) -> No
 
     If the user has already selected a language, prompts the user to select a new language.
     Otherwise, prompts the user to select a language.
-
-    :param message: Message object.
-    :param manager: Manager object.
-    :param user_data: UserData object.
-    :return: None
     """
     if user_data.language_code:
         await Window.change_language(manager)
@@ -62,18 +54,18 @@ async def handler(message: Message, manager: Manager, user_data: UserData) -> No
     await manager.delete_message(message)
 
 
-@router.message(Command("source"))
-async def handler(message: Message, manager: Manager) -> None:
-    """
-    Handles the /source command.
-
-    :param message: Message object.
-    :param manager: Manager object.
-    :return: None
-    """
-    text = manager.text_message.get("source")
-    await manager.send_message(text)
-    await manager.delete_message(message)
+# @router.message(Command("source"))
+# async def handler(message: Message, manager: Manager) -> None:
+#     """
+#     Handles the /source command.
+#
+#     :param message: Message object.
+#     :param manager: Manager object.
+#     :return: None
+#     """
+#     text = manager.text_message.get("source")
+#     await manager.send_message(text)
+#     await manager.delete_message(message)
 
 
 @router.message(
@@ -88,12 +80,6 @@ async def handler(
 ) -> None:
     """
     Handles the /newsletter command.
-
-    :param message: Message object.
-    :param manager: Manager object.
-    :param redis: RedisStorage object.
-    :param an_manager: Manager object from aiogram_newsletter.
-    :return: None
     """
     users_ids = await redis.get_all_users_ids()
     await an_manager.newsletter_menu(users_ids, Window.main_menu)

@@ -11,10 +11,11 @@ are intelligently categorized, promoting organized and streamlined discussion in
 as blocking unwanted users, silent mode in topics for discreet conversations, and more. Improve group communication with
 Support Bot!
 
-* Bot example: [@nessshonSupportBot](https://t.me/nessshonSupportBot)
-* Linked group example: [@nessshonSupportGroup](https://t.me/nessshonSupportGroup)
+-   Bot example: [@nessshonSupportBot](https://t.me/nessshonSupportBot)
+-   Linked group example: [@nessshonSupportGroup](https://t.me/nessshonSupportGroup)
 
 **About Limits**:
+
 <blockquote>
 Specific limits are not specified in the documentation, but the community has shared some rough numbers. 
 <br>
@@ -26,27 +27,27 @@ Specific limits are not specified in the documentation, but the community has sh
 <details>
 <summary><b>Available bot commands for admins (DEV_ID)</b></summary>
 
-* `/newsletter` - Open the newsletter menu.
+-   `/newsletter` - Open the newsletter menu.
 
-  Use this command to initiate a newsletter for users.
-  **Note**: This command works only in private chats.
+    Use this command to initiate a newsletter for users.
+    **Note**: This command works only in private chats.
 
 </details>
 
 <details>
 <summary><b>Available bot commands in the group topics</b></summary>
 
-* `/ban` - Block/Unblock User.
+-   `/ban` - Block/Unblock User.
 
-  Use this command to block or unblock a user, controlling the receipt of messages from them.
+    Use this command to block or unblock a user, controlling the receipt of messages from them.
 
-* `/silent` - Activate/Deactivate Silent Mode.
+-   `/silent` - Activate/Deactivate Silent Mode.
 
-  Enable or disable silent mode to prevent messages from being sent to the user.
+    Enable or disable silent mode to prevent messages from being sent to the user.
 
-* `/information` - User Information.
+-   `/information` - User Information.
 
-  Receive a message containing basic information about the user.
+    Receive a message containing basic information about the user.
 
 </details>
 
@@ -85,23 +86,24 @@ You need your own server or you can rent one from a hosting provider. For this, 
     ```bash
     cd support-bot
     ```
+
 3. Clone environment variables file:
 
-   ```bash
-   cp .env.example .env
-   ```
+    ```bash
+    cp .env.example .env
+    ```
 
 4. Configure [environment variables](#environment-variables-reference) variables file:
 
-   ```bash
-   nano .env
-   ```
+    ```bash
+    nano .env
+    ```
 
 5. Running a bot in a docker container:
 
-   ```bash
-   docker-compose up --build
-   ```
+    ```bash
+    docker-compose up --build
+    ```
 
 </details>
 
@@ -112,15 +114,13 @@ You need your own server or you can rent one from a hosting provider. For this, 
 
 Here is a comprehensive reference guide for the environment variables used in the project:
 
-| Variable       | Type  | Description                                                   | Example               |
-|----------------|-------|---------------------------------------------------------------|-----------------------|
-| `BOT_TOKEN`    | `str` | Bot token, obtained from [@BotFather](https://t.me/BotFather) | `123456:qweRTY`       | 
-| `BOT_DEV_ID`   | `int` | User ID of the bot developer or admin                         | `123456789`           |
-| `BOT_GROUP_ID` | `str` | Group ID where the bot operates                               | `-100123456789`       |
-| `BOT_EMOJI_ID` | `str` | The custom emoji ID for the group's topic.                    | `5417915203100613993` |
-| `REDIS_HOST`   | `str` | The hostname or IP address of the Redis server                | `redis`               |
-| `REDIS_PORT`   | `int` | The port number on which the Redis server is running          | `6379`                |
-| `REDIS_DB`     | `int` | The Redis database number                                     | `1`                   |
+| Variable       | Type  | Description                                                   | Example                |
+| -------------- | ----- | ------------------------------------------------------------- | ---------------------- |
+| `BOT_TOKEN`    | `str` | Bot token, obtained from [@BotFather](https://t.me/BotFather) | `123456:qweRTY`        |
+| `BOT_DEV_ID`   | `int` | User ID of the bot developer or admin                         | `123456789`            |
+| `BOT_GROUP_ID` | `str` | Group ID where the bot operates                               | `-100123456789`        |
+| `BOT_EMOJI_ID` | `str` | The custom emoji ID for the group\'s topic.                   | `5417915203100613993`  |
+| `REDIS_URL`    | `str` | The connection URL for the Redis server                       | `redis://redis:6379/1` |
 
 <details>
 <summary>List of supporting custom emoji ID's</summary>
@@ -367,12 +367,12 @@ Here is a comprehensive reference guide for the environment variables used in th
 
 I recommend using [aeza.net](https://aeza.net/?ref=362599) for your hosting needs. Here's why:
 
-- **24/7 Support**: Quick and effective support via chat or phone.
-- **Promo Plan for €1**: Great for testing Telegram bots and small websites.
-- **Easy Backups**: Secure backups on independent servers.
-- **Hourly Billing**: Rent a server by the hour for testing or demos.
-- **Anti-DDoS Protection**: Reliable and secure internet connection for your business.
-- **Multiple Payment Methods**: Supports various payment methods, including cryptocurrencies like TON.
+-   **24/7 Support**: Quick and effective support via chat or phone.
+-   **Promo Plan for €1**: Great for testing Telegram bots and small websites.
+-   **Easy Backups**: Secure backups on independent servers.
+-   **Hourly Billing**: Rent a server by the hour for testing or demos.
+-   **Anti-DDoS Protection**: Reliable and secure internet connection for your business.
+-   **Multiple Payment Methods**: Supports various payment methods, including cryptocurrencies like TON.
 
 Learn more at [aeza.net](https://aeza.net/?ref=362599).
 

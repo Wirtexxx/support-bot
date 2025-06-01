@@ -3,7 +3,6 @@ from abc import abstractmethod, ABCMeta
 from aiogram.utils.markdown import hbold
 
 # Add other languages and their corresponding codes as needed.
-# You can also keep only one language by removing the line with the unwanted language.
 SUPPORTED_LANGUAGES = {
     "ru": "🇷🇺 Русский",
     "en": "🇬🇧 English",
@@ -45,123 +44,151 @@ class Text(metaclass=ABCMeta):
 
 class TextMessage(Text):
     """
-    Subclass of Text for managing text messages in different languages.
+    Subclass of Text for managing text messages in different languages,
+    tailored for the Vortet Casino support bot.
     """
 
     @property
     def data(self) -> dict:
         """
-        Provides language-specific text data for text messages.
+        Provides language-specific text data for text messages,
+        customized for Vortet Casino support.
 
         :return: Dictionary containing language-specific text data for text messages.
         """
         return {
             "en": {
-                "select_language": f"👋 <b>Hello</b>, {hbold('{full_name}')}!\n\nSelect language:",
-                "change_language": "<b>Select language:</b>",
-                "main_menu": "<b>Write your question</b>, and we will answer you as soon as possible:",
-                "message_sent": "<b>Message sent!</b> Expect a response.",
-                "message_edited": (
-                    "<b>The message was edited only in your chat.</b> "
-                    "To send an edited message, send it as a new message."
+                # Shown on /start: greeting + select language + link to support chat
+                "select_language": (
+                    f"👋 <b>Welcome</b>, {hbold('{full_name}')}!\n\n"
+                    "This is the official support bot for <b>Vortet Casino</b>.\n"
+                    "Please select your language below:\n\n"
+                    "🇬🇧 English\n"
+                    "🇷🇺 Русский\n\n"
+                    "—\n"
+                    "<a href=\"https://t.me/vortet\">Join to Channel</a>"
                 ),
-                "source": (
-                    "Source code available at "
-                    "<a href=\"https://github.com/nessshon/support-bot\">GitHub</a>"
+                "change_language": "<b>Change language:</b>\n\n🇬🇧 English\n🇷🇺 Русский",
+                # Prompt user to ask about casino-related questions
+                "main_menu": (
+                    "<b>Type your question about Vortet Casino</b>, "
+                    "and our support team will get back to you shortly:"
+                ),
+                "message_sent": "<b>Your message has been sent!</b> Our support team will reply soon.",
+                "message_edited": (
+                    "<b>Your message was edited only in your chat.</b> "
+                    "To resend the updated text, please send it as a new message."
                 ),
                 "user_started_bot": (
-                    f"User {hbold('{name}')} started the bot!\n\n"
-                    "List of available commands:\n\n"
+                    f"A user {hbold('{name}')} has started the Vortet Casino Support Bot!\n\n"
+                    "Available commands for admins:\n\n"
                     "• /ban\n"
-                    "Block/Unblock user"
-                    "<blockquote>Block the user if you do not want to receive messages from him.</blockquote>\n\n"
+                    "  Block or unblock a user.\n"
+                    "<blockquote>Use this to prevent unwanted messages.</blockquote>\n\n"
                     "• /silent\n"
-                    "Activate/Deactivate silent mode"
-                    "<blockquote>When silent mode is enabled, messages are not sent to the user.</blockquote>\n\n"
+                    "  Toggle silent mode.\n"
+                    "<blockquote>When enabled, the user will not receive any messages.</blockquote>\n\n"
                     "• /information\n"
-                    "User information"
-                    "<blockquote>Receive a message with basic information about the user.</blockquote>"
+                    "  Show user information.\n"
+                    "<blockquote>Retrieve basic details about a user.</blockquote>"
                 ),
-                "user_restarted_bot": f"User {hbold('{name}')} restarted the bot!",
-                "user_stopped_bot": f"User {hbold('{name}')} stopped the bot!",
-                "user_blocked": "<b>User blocked!</b> Messages from the user are not accepted.",
-                "user_unblocked": "<b>User unblocked!</b> Messages from the user are being accepted again.",
-                "blocked_by_user": "<b>Message not sent!</b> The bot has been blocked by the user.",
+                "user_restarted_bot": f"A user {hbold('{name}')} has restarted the Vortet Casino Support Bot!",
+                "user_stopped_bot": f"A user {hbold('{name}')} has stopped the Vortet Casino Support Bot!",
+                "user_blocked": (
+                    "<b>User blocked!</b> Messages from this user will not be processed."
+                ),
+                "user_unblocked": (
+                    "<b>User unblocked!</b> Messages from this user will be processed again."
+                ),
+                "blocked_by_user": (
+                    "<b>Cannot send message!</b> The user has blocked the bot."
+                ),
                 "user_information": (
-                    "<b>ID:</b>\n"
-                    "- <code>{id}</code>\n"
-                    "<b>Name:</b>\n"
-                    "- {full_name}\n"
-                    "<b>Status:</b>\n"
-                    "- {state}\n"
-                    "<b>Username:</b>\n"
-                    "- {username}\n"
-                    "<b>Blocked:</b>\n"
-                    "- {is_banned}\n"
-                    "<b>Registration date:</b>\n"
-                    "- {created_at}"
+                    "<b>User Information:</b>\n"
+                    "- <b>ID:</b> <code>{id}</code>\n"
+                    "- <b>Name:</b> {full_name}\n"
+                    "- <b>Status:</b> {state}\n"
+                    "- <b>Username:</b> @{username}\n"
+                    "- <b>Banned:</b> {is_banned}\n"
+                    "- <b>Registered At:</b> {created_at}"
                 ),
-                "message_not_sent": "<b>Message not sent!</b> An unexpected error occurred.",
-                "message_sent_to_user": "<b>Message sent to user!</b>",
+                "message_not_sent": (
+                    "<b>Unable to send message!</b> An unexpected error occurred."
+                ),
+                "message_sent_to_user": "<b>Your message was delivered to the user!</b>",
                 "silent_mode_enabled": (
-                    "<b>Silent mode activated!</b> Messages will not be delivered to the user."
+                    "<b>Silent mode enabled!</b> "
+                    "The user will not receive messages until silent mode is disabled."
                 ),
                 "silent_mode_disabled": (
-                    "<b>Silent mode deactivated!</b> The user will receive all messages."
+                    "<b>Silent mode disabled!</b> "
+                    "The user will receive all incoming messages."
                 ),
             },
             "ru": {
-                "select_language": f"👋 <b>Привет</b>, {hbold('{full_name}')}!\n\nВыберите язык:",
-                "change_language": "<b>Выберите язык:</b>",
-                "main_menu": "<b>Оставьте свой вопрос</b>, и мы ответим вам в ближайшее время:",
-                "message_sent": "<b>Сообщение отправлено!</b> Ожидайте ответа.",
-                "message_edited": (
-                    "<b>Сообщение отредактировано только в вашем чате.</b> "
-                    "Чтобы отправить отредактированное сообщение, отправьте его как новое сообщение."
+                "select_language": (
+                    f"👋 <b>Добро пожаловать</b>, {hbold('{full_name}')}!\n\n"
+                    "Это официальный бот поддержки <b>казино Vortet</b>.\n"
+                    "Пожалуйста, выберите язык ниже:\n\n"
+                    "🇬🇧 English\n"
+                    "🇷🇺 Русский\n\n"
+                    "—\n"
+                    "<a href=\"https://t.me/vortet\">Перейти в наш канал</a>"
                 ),
-                "source": (
-                    "Исходный код доступен на "
-                    "<a href=\"https://github.com/nessshon/support-bot\">GitHub</a>"
+                "change_language": "<b>Сменить язык:</b>\n\n🇬🇧 English\n🇷🇺 Русский",
+                "main_menu": (
+                    "<b>Задайте свой вопрос о казино Vortet</b>, "
+                    "и наша служба поддержки ответит вам в ближайшее время:"
+                ),
+                "message_sent": "<b>Ваше сообщение отправлено!</b> Ожидайте ответа поддержки.",
+                "message_edited": (
+                    "<b>Ваше сообщение было отредактировано только в вашем чате.</b> "
+                    "Чтобы отправить обновлённый текст, отправьте его как новое сообщение."
                 ),
                 "user_started_bot": (
-                    f"Пользователь {hbold('{name}')} запустил(а) бота!\n\n"
-                    "Список доступных команд:\n\n"
+                    f"Пользователь {hbold('{name}')} запустил(а) бот поддержки Vortet!\n\n"
+                    "Доступные команды для администраторов:\n\n"
                     "• /ban\n"
-                    "Заблокировать/Разблокировать пользователя"
-                    "<blockquote>Заблокируйте пользователя, если не хотите получать от него сообщения.</blockquote>\n\n"
+                    "  Заблокировать или разблокировать пользователя.\n"
+                    "<blockquote>Используйте, чтобы остановить нежелательные сообщения.</blockquote>\n\n"
                     "• /silent\n"
-                    "Активировать/Деактивировать тихий режим"
-                    "<blockquote>При включенном тихом режиме сообщения не отправляются пользователю.</blockquote>\n\n"
+                    "  Включить/выключить тихий режим.\n"
+                    "<blockquote>При включении пользователь не будет получать сообщения.</blockquote>\n\n"
                     "• /information\n"
-                    "Информация о пользователе"
-                    "<blockquote>Получить сообщение с основной информацией о пользователе.</blockquote>"
+                    "  Показать информацию о пользователе.\n"
+                    "<blockquote>Получить основные данные о пользователе.</blockquote>"
                 ),
-                "user_restarted_bot": f"Пользователь {hbold('{name}')} перезапустил(а) бота!",
-                "user_stopped_bot": f"Пользователь {hbold('{name}')} остановил(а) бота!",
-                "user_blocked": "<b>Пользователь заблокирован!</b> Сообщения от пользователя не принимаются.",
-                "user_unblocked": "<b>Пользователь разблокирован!</b> Сообщения от пользователя вновь принимаются.",
-                "blocked_by_user": "<b>Сообщение не отправлено!</b> Бот был заблокирован пользователем.",
+                "user_restarted_bot": f"Пользователь {hbold('{name}')} перезапустил(а) бот поддержки Vortet!",
+                "user_stopped_bot": f"Пользователь {hbold('{name}')} остановил(а) бот поддержки Vortet!",
+                "user_blocked": (
+                    "<b>Пользователь заблокирован!</b> Сообщения от этого пользователя не будут обрабатываться."
+                ),
+                "user_unblocked": (
+                    "<b>Пользователь разблокирован!</b> Сообщения от этого пользователя снова обрабатываются."
+                ),
+                "blocked_by_user": (
+                    "<b>Не удалось отправить сообщение!</b> Пользователь заблокировал бота."
+                ),
                 "user_information": (
-                    "<b>ID:</b>\n"
-                    "- <code>{id}</code>\n"
-                    "<b>Имя:</b>\n"
-                    "- {full_name}\n"
-                    "<b>Статус:</b>\n"
-                    "- {state}\n"
-                    "<b>Username:</b>\n"
-                    "- {username}\n"
-                    "<b>Заблокирован:</b>\n"
-                    "- {is_banned}\n"
-                    "<b>Дата регистрации:</b>\n"
-                    "- {created_at}"
+                    "<b>Информация о пользователе:</b>\n"
+                    "- <b>ID:</b> <code>{id}</code>\n"
+                    "- <b>Имя:</b> {full_name}\n"
+                    "- <b>Статус:</b> {state}\n"
+                    "- <b>Username:</b> @{username}\n"
+                    "- <b>Заблокирован:</b> {is_banned}\n"
+                    "- <b>Зарегистрирован:</b> {created_at}"
                 ),
-                "message_not_sent": "<b>Сообщение не отправлено!</b> Произошла неожиданная ошибка.",
-                "message_sent_to_user": "<b>Сообщение отправлено пользователю!</b>",
+                "message_not_sent": (
+                    "<b>Не удалось отправить сообщение!</b> Произошла непредвиденная ошибка."
+                ),
+                "message_sent_to_user": "<b>Сообщение успешно доставлено пользователю!</b>",
                 "silent_mode_enabled": (
-                    "<b>Тихий режим активирован!</b> Сообщения не будут доставлены пользователю."
+                    "<b>Тихий режим включён!</b> "
+                    "Пользователь не будет получать сообщения до отключения тихого режима."
                 ),
                 "silent_mode_disabled": (
-                    "<b>Тихий режим деактивирован!</b> Пользователь будет получать все сообщения."
+                    "<b>Тихий режим выключен!</b> "
+                    "Пользователь снова будет получать все сообщения."
                 ),
             },
         }

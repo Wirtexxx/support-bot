@@ -26,21 +26,9 @@ class RedisConfig:
     Data class representing the configuration for Redis.
 
     Attributes:
-    - HOST (str): The Redis host.
-    - PORT (int): The Redis port.
-    - DB (int): The Redis database number.
+    - URL (str): The Redis connection URL.
     """
-    HOST: str
-    PORT: int
-    DB: int
-
-    def dsn(self) -> str:
-        """
-        Generates a Redis connection DSN (Data Source Name) using the provided host, port, and database.
-
-        :return: The generated DSN.
-        """
-        return f"redis://{self.HOST}:{self.PORT}/{self.DB}"
+    URL: str
 
 
 @dataclass
@@ -73,8 +61,6 @@ def load_config() -> Config:
             BOT_EMOJI_ID=env.str("BOT_EMOJI_ID"),
         ),
         redis=RedisConfig(
-            HOST=env.str("REDIS_HOST"),
-            PORT=env.int("REDIS_PORT"),
-            DB=env.int("REDIS_DB"),
+            URL=env.str("REDIS_URL"),
         ),
     )

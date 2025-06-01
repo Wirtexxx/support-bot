@@ -1,4 +1,5 @@
 import asyncio
+from urllib.parse import urlparse
 
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
@@ -63,10 +64,11 @@ async def main() -> None:
     config = load_config()
 
     # Initialize apscheduler
+    parsed_redis_url = urlparse(config.redis.URL)
     job_store = RedisJobStore(
-        host=config.redis.HOST,
-        port=config.redis.PORT,
-        db=config.redis.DB,
+        host=parsed_redis_url.hostname,
+        port=parsed_redis_url.port,
+        db=int(parsed_redis_url.path.lstrip('/')) if parsed_redis_url.path else 0
     )
     apscheduler = AsyncIOScheduler(
         jobstores={"default": job_store},
@@ -74,7 +76,7 @@ async def main() -> None:
 
     # Initialize Redis storage
     storage = RedisStorage.from_url(
-        url=config.redis.dsn(),
+        url=config.redis.URL,
     )
 
     # Create Bot and Dispatcher instances
