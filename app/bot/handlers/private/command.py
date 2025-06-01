@@ -25,22 +25,37 @@ async def handler(
 
     Sends a sticker, then either shows the main menu (if language is set) or
     prompts for language selection. Finally, creates (or fetches) a forum topic.
+    After displaying the menu, deletes both the original /start message and the sent sticker.
     """
-    # Отправляем стикер по его ID (замените 'YOUR_STICKER_ID' на фактический ID вашего стикера)
-    await message.bot.send_sticker(chat_id=message.chat.id, sticker="CAACAgIAAxkBAAEOnqVoPFDGG4ku9yKPMSD4b2ilD3_hOAAC1XYAAk0f4UnF-LXTUdESoDYE")
-
+    # Если язык уже задан — отправляем стикер и показываем главное меню
     if user_data.language_code:
+        sticker_msg = await message.bot.send_sticker(
+            chat_id=message.chat.id,
+            sticker="CAACAgIAAxkBAAEOnqVoPFDGG4ku9yKPMSD4b2ilD3_hOAAC1XYAAk0f4UnF-LXTUdESoDYE"
+        )
         await Window.main_menu(manager)
     else:
+        # Иначе предлагаем выбрать язык
+        sticker_msg = None
         await Window.select_language(manager)
+
+    # Удаляем исходное сообщение /start
     await manager.delete_message(message)
 
-    # Create (or get) the forum topic for this user
+    # Удаляем стикер (если он был отправлен)
+    if sticker_msg:
+        await manager.delete_message(sticker_msg)
+
+    # Создаём или получаем forum topic для этого пользователя
     await get_or_create_forum_topic(message.bot, redis, manager.config, user_data)
 
 
 @router.message(Command("language"))
-async def handler(message: Message, manager: Manager, user_data: UserData) -> None:
+async def handler(
+        message: Message,
+        manager: Manager,
+        user_data: UserData
+) -> None:
     """
     Handles the /language command.
 
@@ -52,20 +67,6 @@ async def handler(message: Message, manager: Manager, user_data: UserData) -> No
     else:
         await Window.select_language(manager)
     await manager.delete_message(message)
-
-
-# @router.message(Command("source"))
-# async def handler(message: Message, manager: Manager) -> None:
-#     """
-#     Handles the /source command.
-#
-#     :param message: Message object.
-#     :param manager: Manager object.
-#     :return: None
-#     """
-#     text = manager.text_message.get("source")
-#     await manager.send_message(text)
-#     await manager.delete_message(message)
 
 
 @router.message(
